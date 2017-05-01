@@ -37,8 +37,8 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
-  config.action_cable.url = "ws://localhost:5000/api/cable";
-  config.action_cable.allowed_request_origins = [ 'http://localhost:3000', 'localhost:3000' ]
+  # config.action_cable.url = "ws://localhost:5000/api/cable";
+  # config.action_cable.allowed_request_origins = [ 'http://localhost:3001', 'localhost:3001' ]
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
