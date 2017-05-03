@@ -15,9 +15,7 @@ class User < ApplicationRecord
 
   has_many :notifications, dependent: :destroy, foreign_key: :recipient_id
 
-
-  include SearchableUser
-  
+  attr_accessor :password, :password_confirmation
   has_secure_password validations: false
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   USERNAME_REGEX = /\A[a-zA-Z0-9_-]{3,30}\z/
@@ -57,6 +55,10 @@ class User < ApplicationRecord
 
   def facebook_login?
     facebook_id.present?
+  end
+
+  def self.search(query)
+    self.where("username ILIKE ?", "%#{query}%")
   end
 
   def avatar_url

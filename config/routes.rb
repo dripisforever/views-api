@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get ':username/public_profile' => 'public_profiles#show'
       get ':username/followers' => 'followers#index'
       get ':username/following' => 'following#index'
+      resource :search, only: :show
     end
     get "autocomplete" => "search_autocomplete#index"
     patch 'me/avatar' => 'avatar_images#update'
