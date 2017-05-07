@@ -2,9 +2,9 @@ class Users::SearchesController < ApplicationController
   before_action :require_query
 
   def show
-    @users = User.search(params[:q])
+    users = User.search(params[:q])
 
-    render json: @users
+    render json: users, status: 200
   end
 
   private
