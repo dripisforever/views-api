@@ -17,7 +17,7 @@ class Post::Create
   private
 
   def create_tags
-    post.tags = post.caption.scan(/#\w+/).map do |tag_name|
+    post.tags = post.caption.scan(/#\S+/).map do |tag_name|
       Tag.where(name: tag_name[1..-1]).first_or_create
     end
   end
