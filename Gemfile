@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.3.0'
 
-gem 'rails', '~> 5.0.0'
+gem 'rails', '5.0.1'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'jwt', '~> 1.5'
@@ -14,9 +14,9 @@ gem 'will_paginate', '~> 3.1'
 gem 'redis', '~> 3.0'
 gem 'sidekiq', '~> 4.0'
 # Elasticsearch
-gem 'elasticsearch-model', '~> 0.1.8'
-gem 'elasticsearch-rails', '~> 0.1.8'
-
+# gem 'elasticsearch-model', '~> 0.1.8'
+# gem 'elasticsearch-rails', '~> 0.1.8'
+gem 'jbuilder'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

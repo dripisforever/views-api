@@ -1,9 +1,13 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
   include ActionController::HttpAuthentication::Token::ControllerMethods
   attr_reader :current_user
 
   def authenticate_user!
     authenticate_user_from_token || render_unauthorized
+  end
+
+  def current_user
+    @current_user
   end
 
   def pagination_dict(object)

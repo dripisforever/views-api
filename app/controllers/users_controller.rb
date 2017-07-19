@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
 
   def update
+    # current_user = User.find(params[:id])
     if current_user.update_attributes(user_params)
       render json: current_user, serializer: CurrentUserSerializer, status: 200
     else

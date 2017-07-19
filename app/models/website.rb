@@ -1,5 +1,6 @@
-class Post < ApplicationRecord
+class Website < ApplicationRecord
   belongs_to :user
+  has_many :views
   has_many :likes, dependent: :destroy
   has_many :likers, through: :likes, source: :user
   has_many :comments, dependent: :destroy
@@ -15,6 +16,7 @@ class Post < ApplicationRecord
     includes(:user, :comments).order(created_at: :desc).paginate(page: page, per_page: per_page)
   }
 
+  include SearchableWebsite
   # def self.search(query)
   #   self.where("caption ILIKE ?", "%#{query}%")
   # end

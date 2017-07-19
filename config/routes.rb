@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope '/api' do
+  scope '/api', defaults: {format: :json} do
     namespace :users do
       resources :notifications, only: [:index, :update]
       resource :notification_counts, only: [:show, :destroy]
@@ -30,6 +30,13 @@ Rails.application.routes.draw do
     resources :locations, only: [:show]
 
     resources :follow_suggestions, only: [:index]
+
+
+    resources :channels, only: [:show, :index]
+    resources :messages, except: [:new, :edit]
+    # get 'messages_search', to: 'messages#search'
+    resources :direct_messages, except: [:new, :edit, :update]
+    resources :channel_joins, only: [:create, :destroy, :index]
 
     mount ActionCable.server => '/cable'
   end
