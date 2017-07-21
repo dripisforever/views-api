@@ -25,7 +25,16 @@ class User < ApplicationRecord
                       format: { with: USERNAME_REGEX, message: "should be one word" }, unless: :facebook_login?
   validates :password, presence: true, length: { minimum: 8 }, unless: :facebook_login?
 
+  # Carrierwave avatar uploader
   mount_uploader :avatar, AvatarUploader
+
+  # Elasticsearch
+  # include Elasticsearch::Model
+  include SearchableUser
+
+  # beautify_url
+  # extend FriendlyId
+  # friendly_id :username, use: [ :slugged, :finders ]
 
   def self.authenticate(email_or_username, password)
     user = User.find_by(email: email_or_username) || User.find_by(username: email_or_username)
@@ -57,9 +66,9 @@ class User < ApplicationRecord
     facebook_id.present?
   end
 
-  def self.search(query)
-    self.where("username ILIKE ?", "%#{query}%")
-  end
+  # def self.search(query)
+  #   self.where("username ILIKE ?", "%#{query}%")
+  # end
 
   def avatar_url
     if facebook_login? && avatar.url.nil?

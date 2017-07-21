@@ -12,6 +12,11 @@ Rails.application.routes.draw do
       get ':username/following' => 'following#index'
       resource :search, only: :show
     end
+
+    get "search" => "search#show", as: :search
+    get "surf" => "search_autocomplete#index"
+    get "weby" => "search#websitess"
+    get "search_user" => "search#users"
     # get "autocomplete" => "search_autocomplete#index"
     # patch 'me/avatar' => 'avatar_images#update'
     patch 'me' => 'users#update'
