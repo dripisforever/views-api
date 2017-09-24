@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  url: MyString
+  scrapped: false
+  valid_site: false
+  title: MyString
+  business: false
+  batch: one
+
+two:
+  url: MyString
+  scrapped: false
+  valid_site: false
+  title: MyString
+  business: false
+  batch: two

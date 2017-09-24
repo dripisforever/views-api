@@ -19,6 +19,10 @@ gem 'jbuilder'
 gem 'elasticsearch-model', '~> 0.1.8'
 gem 'elasticsearch-rails', '~> 0.1.8'
 
+gem 'mechanize'
+gem 'nokogiri'
+gem 'addressable'
+gem 'to_regexp'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

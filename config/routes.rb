@@ -10,11 +10,12 @@ Rails.application.routes.draw do
       get ':username/public_profile' => 'public_profiles#show'
       get ':username/followers' => 'followers#index'
       get ':username/following' => 'following#index'
-      resource :search, only: :show
+      # resource :search, only: :show
     end
 
-    get "search" => "search#show", as: :search
+    # get "search" => "search#show", as: :search
     get "surf" => "search_autocomplete#index"
+    get "search" => "search_autocomplete#index"
     get "weby" => "search#websitess"
     get "search_user" => "search#users"
     # get "autocomplete" => "search_autocomplete#index"
