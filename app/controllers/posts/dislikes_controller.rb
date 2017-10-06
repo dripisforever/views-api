@@ -1,15 +1,15 @@
-class Posts::LikesController < ApplicationController
+class Posts::DislikesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post
 
   def create
-    current_user.like!(@post)
+    current_user.dislike!(@post)
     create_notification
     head 204
   end
 
   def destroy
-    current_user.delete_like!(@post)
+    current_user.delete_dislike!(@post)
     head 204
   end
 
@@ -22,7 +22,7 @@ class Posts::LikesController < ApplicationController
     def create_notification
       unless current_user.id == @post.user.id
         notification = Notification.create!(actor: current_user, recipient: @post.user,
-                             notifiable: @post, action_type: 'LIKE_POST')
+                             notifiable: @post, action_type: 'DISLIKE_POST')
         Notification::Broadcaster.new(notification, to: @post.user).broadcast
       end
     end

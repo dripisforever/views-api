@@ -11,7 +11,7 @@ module SearchableWebsite
     settings INDEX_OPTIONS do
       mappings dynamic: 'false' do
         indexes :name, analyzer: 'autocomplete'
-        indexes :header
+        indexes :title
         indexes :body
         # indexes :slug
       end
@@ -23,8 +23,17 @@ module SearchableWebsite
           query: {
             multi_match: {
               query: term,
-              fields: ['name^10', 'header', 'body']
+              fields: ['title^10', 'name', 'body^9']
             }
+          },
+
+          highlight: {
+              tags_schema: 'styled',
+              fields: {
+                title:    { number_of_fragments: 1 },
+                body: { number_of_fragments: 1 },
+                url: { fragment_size: 50 }
+              }
           }
         }
       )
@@ -34,16 +43,16 @@ module SearchableWebsite
 
   def as_indexed_json(options ={})
     self.as_json({
-      only: [:name]
+      only: [:title, :body, :url]
     })
   end
 
   def index_document
-    ElasticsearchIndexJob.perform_later('index', 'Website', self.id) if self.published?
+    ElasticsearchIndexJob.perform_later('index', 'Website', self.id) if self.created_at?
   end
 
   def delete_document
-    ElasticsearchIndexJob.perform_later('delete', 'Website', self.id) if self.published?
+    ElasticsearchIndexJob.perform_later('delete', 'Website', self.id) if self.created_at?
   end
 
   INDEX_OPTIONS = {

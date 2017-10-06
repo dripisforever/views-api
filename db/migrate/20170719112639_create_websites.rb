@@ -3,7 +3,7 @@ class CreateWebsites < ActiveRecord::Migration[5.0]
     create_table :websites do |t|
       t.string :name
       t.string :header
-      # t.string :title
+      t.string :title
       t.string :body
 
       t.timestamps

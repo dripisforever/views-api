@@ -28,5 +28,6 @@ module HackafyApi
     config.api_only = true
     config.eager_load_paths << Rails.root.join('lib')
     config.autoload_paths << "#{Rails.root}/app/services"
+    # config.active_joq.queue_adapter = :sidekiq
   end
 end

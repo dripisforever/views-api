@@ -152,6 +152,10 @@ class Crawler
     @title
   end
 
+  def body
+    @body
+  end
+
   def neg_keywords
     @neg_keywords
   end

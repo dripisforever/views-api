@@ -1,5 +1,11 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   scope '/api' do
+    post '/import_csv' => "home#import_csv"
+
+    mount Sidekiq::Web => '/sidekiq'
+
     namespace :users do
       resources :notifications, only: [:index, :update]
       resource :notification_counts, only: [:show, :destroy]

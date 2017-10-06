@@ -24,6 +24,7 @@ module SearchableUser
             multi_match: {
               query: term,
               fields: ['username^10', 'email']
+              # fields: ['username^10', 'firstname', 'lastname']
             }
           }
         }
@@ -41,14 +42,14 @@ module SearchableUser
   def index_document
     ElasticsearchIndexJob.perform_later('index', 'User', self.id)
     self.posts.find_each do |post|
-      ElasticsearchIndexJob.perform_later('index', 'Website', post.id) if post.published?
+      ElasticsearchIndexJob.perform_later('index', 'Post', post.id) if post.created_at?
     end
   end
 
   def delete_document
     ElasticsearchIndexJob.perform_later('delete', 'User', self.id)
     self.posts.find_each do |post|
-      ElasticsearchIndexJob.perform_later('delete', 'Post', post.id) if post.published?
+      ElasticsearchIndexJob.perform_later('delete', 'Post', post.id) if post.created_at?
     end
   end
 
