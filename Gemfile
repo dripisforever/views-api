@@ -13,6 +13,8 @@ gem 'carrierwave', '~> 0.11.2'
 gem 'will_paginate', '~> 3.1'
 gem 'redis', '~> 3.0'
 gem 'friendly_id', '~> 5.1'
+
+# gem 'sinatra'
 gem 'sidekiq', '~> 4.0'
 gem 'jbuilder'
 # Elasticsearch

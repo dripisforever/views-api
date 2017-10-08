@@ -1,5 +1,11 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   scope '/api' do
+    post '/import_csv' => "home#import_csv"
+
+    mount Sidekiq::Web => '/sidekiq'
+
     namespace :users do
       resources :notifications, only: [:index, :update]
       resource :notification_counts, only: [:show, :destroy]
@@ -10,9 +16,14 @@ Rails.application.routes.draw do
       get ':username/public_profile' => 'public_profiles#show'
       get ':username/followers' => 'followers#index'
       get ':username/following' => 'following#index'
-      # resource :search, only: :show
+      resource :search, only: :show
+      # get '/search' => 'search#show'
     end
 
+    namespace :websites do
+      get 'search' => 'search#show'
+      # resource :search, only: :show
+    end
     # get "search" => "search#show", as: :search
     get "surf" => "search_autocomplete#index"
     get "search" => "search_autocomplete#index"

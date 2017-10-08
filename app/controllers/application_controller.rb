@@ -44,8 +44,10 @@ class ApplicationController < ActionController::API
     def auth_token
       begin
         @auth_token ||=  JsonWebToken.decode(http_token)
+      rescue JWT::ExpiredSignature
+        render json: { errors: ["Auth token has expired"] }, status: :unauthorized
       rescue JWT::VerificationError, JWT::DecodeError
-        return nil
+        render json: { errors: ["Invalid auth token"]}, status: :unauthorized
       end
     end
 end

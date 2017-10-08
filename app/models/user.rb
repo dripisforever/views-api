@@ -45,8 +45,16 @@ class User < ApplicationRecord
     likes.where(post_id: post.id).first_or_create!
   end
 
-  def dislike!(post)
+  def delete_like!(post)
     likes.where(post_id: post.id).destroy_all
+  end
+
+  def dislike!(post)
+    dislikes.where(post_id: post.id).first_or_create!
+  end
+
+  def delete_dislike!(post)
+
   end
 
   def follow(other_user)

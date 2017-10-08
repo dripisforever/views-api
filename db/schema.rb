@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170922211534) do
+ActiveRecord::Schema.define(version: 20170926095655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,23 +24,6 @@ ActiveRecord::Schema.define(version: 20170922211534) do
     t.datetime "updated_at",   null: false
   end
 
-  create_table "channel_joins", force: :cascade do |t|
-    t.integer  "channel_id", null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["channel_id"], name: "index_channel_joins_on_channel_id", using: :btree
-    t.index ["user_id"], name: "index_channel_joins_on_user_id", using: :btree
-  end
-
-  create_table "channels", force: :cascade do |t|
-    t.string   "title",      null: false
-    t.integer  "owner_id",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["owner_id"], name: "index_channels_on_owner_id", using: :btree
-  end
-
   create_table "comments", force: :cascade do |t|
     t.integer  "post_id"
     t.integer  "user_id"
@@ -51,19 +34,14 @@ ActiveRecord::Schema.define(version: 20170922211534) do
     t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
-  create_table "direct_messages", force: :cascade do |t|
-    t.string   "title"
+  create_table "dislikes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "dm_joins", force: :cascade do |t|
-    t.integer  "user_id",           null: false
-    t.integer  "direct_message_id", null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.index ["direct_message_id"], name: "index_dm_joins_on_direct_message_id", using: :btree
-    t.index ["user_id", "direct_message_id"], name: "index_dm_joins_on_user_id_and_direct_message_id", unique: true, using: :btree
+    t.index ["post_id"], name: "index_dislikes_on_post_id", using: :btree
+    t.index ["user_id", "post_id"], name: "index_dislikes_on_user_id_and_post_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_dislikes_on_user_id", using: :btree
   end
 
   create_table "likes", force: :cascade do |t|
@@ -74,16 +52,6 @@ ActiveRecord::Schema.define(version: 20170922211534) do
     t.index ["post_id"], name: "index_likes_on_post_id", using: :btree
     t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_likes_on_user_id", using: :btree
-  end
-
-  create_table "messages", force: :cascade do |t|
-    t.integer  "author_id",     null: false
-    t.text     "body",          null: false
-    t.string   "postable_type"
-    t.integer  "postable_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["postable_type", "postable_id"], name: "index_messages_on_postable_type_and_postable_id", using: :btree
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -167,14 +135,18 @@ ActiveRecord::Schema.define(version: 20170922211534) do
 
   create_table "websites", force: :cascade do |t|
     t.string   "name"
-    t.string   "header"
+    t.string   "title"
     t.string   "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "url"
+    t.integer  "number"
   end
 
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "dislikes", "posts"
+  add_foreign_key "dislikes", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"

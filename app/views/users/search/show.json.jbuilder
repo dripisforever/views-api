@@ -1,10 +1,10 @@
-json.websites do |json|
-  json.array! @websites do |website|
-    json.id website.id
-    json.name website.name
-    # json.url website_path(website.slug)
-  end
-end
+# json.websites do |json|
+#   json.array! @websites do |website|
+#     json.id website.id
+#     json.name website.name
+#     # json.url website_path(website.slug)
+#   end
+# end
 
 json.users do |json|
   json.array! @users do |user|
