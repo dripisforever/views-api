@@ -11,12 +11,12 @@ class SearchController < ApplicationController
   end
 
   def users
-    @users = User.search(query_term).records.to_a
+    @users = User.search(query_term).response
     render json: @users
   end
 
   def websitess
-    @website = Website.search(query_term).records.to_a
+    @website = Website.search(query_term).response
     render json: @website
   end
 

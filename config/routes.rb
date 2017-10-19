@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     end
 
     namespace :websites do
-      get 'search' => 'search#show'
+      get 'search' => 'search#index'
       # resource :search, only: :show
     end
     # get "search" => "search#show", as: :search

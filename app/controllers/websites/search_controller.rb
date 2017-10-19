@@ -1,10 +1,10 @@
 class Websites::SearchController < ApplicationController
   # before_action :require_query
 
-  def show
+  def index
 
-      @websites = Website.search(query_term)
-      render json: @websites, status: 200
+      websites = Website.search(query_term).paginate(page: params[:page], per_page: 10).response
+      render json: websites, meta: pagination_dict(websites), status: 200
 
   end
 

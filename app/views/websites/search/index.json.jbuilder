@@ -6,8 +6,8 @@ json.websites do |json|
     # json.name website.name
     # json.title.fragment website.title.fragment
     # json.url website_path(website.slug)
-    json.fragment website.fragment
-    json.highlight website.content.highlight
+    # json.fragment website.fragment
+    # json.highlight website.content.highlight
   end
 end
 

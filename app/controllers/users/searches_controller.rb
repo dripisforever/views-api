@@ -3,7 +3,7 @@ class Users::SearchesController < ApplicationController
 
   def show
 
-      @users = User.search(query_term)
+      @users = User.search(query_term).results
       render json: @users, status: 200
 
   end
