@@ -13,17 +13,17 @@ class User < ApplicationRecord
             dependent: :destroy
   has_many :followers, through: :passive_relationships, source: :follower
 
+  has_many :queries, dependent: :destroy
   has_many :notifications, dependent: :destroy, foreign_key: :recipient_id
 
-  attr_accessor :password, :password_confirmation
-  has_secure_password validations: false
+  has_secure_password
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   USERNAME_REGEX = /\A[a-zA-Z0-9_-]{3,30}\z/
   validates :email, presence: true, uniqueness: { case_sensitive: false },
                     format: { with: EMAIL_REGEX }, unless: :facebook_login?
   validates :username, presence: true, uniqueness: { case_sensitive: false },
                       format: { with: USERNAME_REGEX, message: "should be one word" }, unless: :facebook_login?
-  validates :password, presence: true, length: { minimum: 8 }, unless: :facebook_login?
+  validates :password_digest, presence: true, length: { minimum: 8 }, unless: :facebook_login?
 
   # Carrierwave avatar uploader
   mount_uploader :avatar, AvatarUploader
@@ -38,9 +38,12 @@ class User < ApplicationRecord
 
   def self.authenticate(email_or_username, password)
     user = User.find_by(email: email_or_username) || User.find_by(username: email_or_username)
-    # user && user.authenticate(password)
+    user && user.authenticate(password)
   end
 
+  # def add_popularity(query)
+  #   Query.likes.where(query_id: query.id).first_or_create!
+  # end
   def like!(post)
     likes.where(post_id: post.id).first_or_create!
   end

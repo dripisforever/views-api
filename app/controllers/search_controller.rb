@@ -3,20 +3,41 @@ class SearchController < ApplicationController
   # layout "simple"
 
   def show
-    @users        = User.search(query_term).records.to_a
+    # @query        = Query.search(query_term).results
+    @users        = User.search(query_term).results
+    # @users        = User.search(query_term).paginate(page: params[:page], per_page: 1).records
+    @websites     = Website.search(query_term).results
+
+    @site = Site.search(query_term).results
     # render json: @users
-    @site_records = Website.search(query_term).paginate(page: params[:page]).records
-    @websites     = @site_records.to_a.select { |post| post.published? }
+    render :show => '/search/show', :formats => :json
+    # render json: @users
+    # @site_records = Website.search(query_term).paginate(page: params[:page]).records
+    # @websites     = @site_records.to_a.select { |post| post.published? }
     # @tags = Tag.search(query_term).records
   end
 
   def users
-    @users = User.search(query_term).response
+    # @users = User.search(query_term).response
+
+    # PAGINATION
+    # @users = User.search(query_term).paginate(page: params[:page], per_page: 1)
+    # @users = User.search(query_term).paginate(page: params[:page], per_page: 1).results
+    # @users = User.search(query_term).paginate(page: params[:page], per_page: 1).response
+    @users = User.search(query_term).paginate(page: params[:page], per_page: 2).records
     render json: @users
+    # render :users => '/search/users', :formats => :json
   end
 
-  def websitess
-    @website = Website.search(query_term).response
+  def queries
+    @queries = Query.search(query_term).paginate(page: params[:page], per_page: 2).records
+    # render json: @query
+    render :queries => '/search/queries', :formats => :json
+  end
+
+  def websites
+    # @website = Website.search(query_term).response
+    @website = Website.search(query_term).paginate(page: params[:page], per_page: 2).records
     render json: @website
   end
 

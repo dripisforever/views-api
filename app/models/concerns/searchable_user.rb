@@ -20,12 +20,32 @@ module SearchableUser
     def self.search(term)
       __elasticsearch__.search(
         {
+          # Multi Match Request
+
+          # query: {
+          #   multi_match: {
+          #     query: term,
+          #     fields: ['username^10', 'email', 'first_name', 'last_name']
+          #   }
+          # },
+
           query: {
-            multi_match: {
-              query: term,
-              fields: ['username^10', 'email']
-              # fields: ['username^10', 'firstname', 'lastname']
+            term: {
+              username: term
+              # email: term,
+              # fields: ['username^10', 'email']
             }
+          },
+
+          highlight: {
+              tags_schema: 'styled',
+              pre_tags: ['<em>'],
+              post_tags: ['</em>'],
+              fields: {
+                username:  { number_of_fragments: 5, fragment_size: 25, fragmenter: 'simple'},
+                title:     { fragmenter: 'simple', phrase_limit: 100, number_of_fragments: 5}
+              }
+
           }
         }
       )

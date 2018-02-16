@@ -23,19 +23,19 @@ module SearchableWebsite
           query: {
             multi_match: {
               query: term,
-              fields: ['title^10', 'name', 'body^9']
+              fields: ['title^10', 'url', 'body^9']
             }
           },
-
           highlight: {
               tags_schema: 'styled',
               pre_tags: ['<em>'],
               post_tags: ['</em>'],
               fields: {
                 title:  { number_of_fragments: 5, fragment_size: 25, fragmenter: 'simple'},
-                body:   { fragmenter: 'simple', phrase_limit: 100, number_of_fragments: 5}
+                # body:   { fragmenter: 'simple', phrase_limit: 100, number_of_fragments: 5}
+                body:   { fragmenter: 'simple', fragment_size: 100,  number_of_fragments: 3}
+                # body:   { fragmenter: 'simple', boundary_scanner: 10, max_fragment_length: 10 }
               }
-
           }
         }
       )

@@ -1,7 +1,7 @@
 namespace :elasticsearch do
   desc 'reindex Elasticsearch for all searchable models'
   task :reindex => :environment do
-    [User, Website].each do |klass|
+    [Site, User, Website, Query].each do |klass|
       # Delete the previous index in Elasticsearch
       klass.__elasticsearch__.client.indices.delete index: klass.index_name rescue nil
 

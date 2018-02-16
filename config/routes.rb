@@ -2,8 +2,10 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   scope '/api' do
+  # scope '/v1' do
     post '/import_csv' => "home#import_csv"
-
+    get  '/sites_list' => "sites#index"
+    get  '/batch_list' => "sites#batch_list"
     mount Sidekiq::Web => '/sidekiq'
 
     namespace :users do
@@ -20,17 +22,26 @@ Rails.application.routes.draw do
       # get '/search' => 'search#show'
     end
 
+    # Create Queries list
+    post   'query/search' => 'queries#create'
+    get    'query/search' => 'queries#create'
+    get    'queries'      => 'queries#index'
+    delete 'query/'       => 'queries#destroy'
     namespace :websites do
       get 'search' => 'search#index'
       # resource :search, only: :show
     end
-    # get "search" => "search#show", as: :search
-    get "surf" => "search_autocomplete#index"
-    get "search" => "search_autocomplete#index"
-    get "weby" => "search#websitess"
+    # get 'query/search' => "search#show"
+    get "queries/search" => "search#queries"
+    get "surf"        => "search_autocomplete#index"
+    get "search"      => "search#show", as: :search
+    # get "search"      => "search#websites", as: :search
+    get "weby"        => "search#websites"
     get "search_user" => "search#users"
+
+    get "sites/search" => "search#sites"
     # get "autocomplete" => "search_autocomplete#index"
-    # patch 'me/avatar' => 'avatar_images#update'
+    put 'me/avatar' => 'avatar_images#update'
     patch 'me' => 'users#update'
 
     post 'follow/:user_id' => 'relationships#create'

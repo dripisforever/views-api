@@ -1,19 +1,19 @@
 source 'https://rubygems.org'
 
-ruby '2.3.0'
+ruby '2.3.1'
 
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.1.4'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'jwt', '~> 1.5'
 gem 'bcrypt', '~> 3.1.7'
 gem 'rack-cors'
-gem 'active_model_serializers', '~> 0.10.2'
+gem 'active_model_serializers', '~> 0.10.6'
 gem 'carrierwave', '~> 0.11.2'
 gem 'will_paginate', '~> 3.1'
 gem 'redis', '~> 3.0'
 gem 'friendly_id', '~> 5.1'
-
+gem 'watir'
 # gem 'sinatra'
 gem 'sidekiq', '~> 4.0'
 gem 'jbuilder'
@@ -30,7 +30,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'pry-rails', '~> 0.3.4'
-  gem 'rb-readline' 
+  gem 'rb-readline'
 end
 
 group :development do

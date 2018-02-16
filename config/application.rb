@@ -16,7 +16,7 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module HackafyApi
+module ViewsApi
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -28,6 +28,6 @@ module HackafyApi
     config.api_only = true
     config.eager_load_paths << Rails.root.join('lib')
     config.autoload_paths << "#{Rails.root}/app/services"
-    # config.active_joq.queue_adapter = :sidekiq
+    config.active_job.queue_adapter = :sidekiq
   end
 end

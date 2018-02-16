@@ -36,19 +36,23 @@ class HomeController < ApplicationController
   end
 
   def import_csv
-    @settings = Setting
-    @keywords = @settings.keywords
-    @neg_keywords = @settings.neg_keywords
+    # @settings = Setting
+    # @keywords = @settings.keywords
+    # @neg_keywords = @settings.neg_keywords
 
     if request.post? && params[:inputfile].present?
       infile = params[:inputfile].read
       n, errors = 0, []
-      batch = Batch.create(:status => :started, :keywords => @keywords, :neg_keywords => @neg_keywords, :started_time => DateTime.now, :min_keywords => Setting.min_keywords)
+      batch = Batch.create(:status => :started)
 
       if batch.save
-        BatchWorker.perform_async(batch.id, infile)
-        redirect_to batch_index_path
+         BatchWorker.perform_async(batch.id, infile)
+        # redirect_to batch_index_path
+        # render json: @batchWorker
+        # render json: batch
       end
+      # render json: @batchWorker
+      # render json: batch
     end
   end
 end
