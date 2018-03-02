@@ -36,7 +36,10 @@ json.websites do |json|
         # json.url website_path(website.slug)
       end
       # json.highlight @websites do |website|
-      #   json.title website.title
+      #   # json.title website.title
+      #   json.snippet website.highlight do |json|
+      #     json.body json.body
+      #   end
       # end
     end
   end

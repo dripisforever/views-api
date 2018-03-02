@@ -18,8 +18,12 @@ module SearchableUser
     end
 
     def self.search(term)
+      # __elasticsearch__.search(query:     ModelQuery.build(keyword),
+      #                          aggs:      ModelQuery::Aggregate.build,
+      #                          highlight: ModelQuery::Highlight.build(term))
+
       __elasticsearch__.search(
-        {
+
           # Multi Match Request
 
           # query: {
@@ -32,8 +36,6 @@ module SearchableUser
           query: {
             term: {
               username: term
-              # email: term,
-              # fields: ['username^10', 'email']
             }
           },
 
@@ -45,9 +47,8 @@ module SearchableUser
                 username:  { number_of_fragments: 5, fragment_size: 25, fragmenter: 'simple'},
                 title:     { fragmenter: 'simple', phrase_limit: 100, number_of_fragments: 5}
               }
-
           }
-        }
+
       )
     end
   end
@@ -55,21 +56,22 @@ module SearchableUser
 
   def as_indexed_json(options ={})
     self.as_json({
-      methods: [:avatar_url], only: [:username, :email, :avatar_url]
+      methods: [:avatar_url],
+      only: [:username, :email, :avatar_url]
     })
   end
 
   def index_document
-    ElasticsearchIndexJob.perform_later('index', 'User', self.id)
+    ElasticsearchIndexWorker.perform_async('index', 'User', self.id)
     self.posts.find_each do |post|
-      ElasticsearchIndexJob.perform_later('index', 'Post', post.id) if post.created_at?
+      ElasticsearchIndexWorker.perform_async('index', 'Post', post.id) if post.created_at?
     end
   end
 
   def delete_document
-    ElasticsearchIndexJob.perform_later('delete', 'User', self.id)
+    ElasticsearchIndexWorker.perform_async('delete', 'User', self.id)
     self.posts.find_each do |post|
-      ElasticsearchIndexJob.perform_later('delete', 'Post', post.id) if post.created_at?
+      ElasticsearchIndexWorker.perform_async('delete', 'Post', post.id) if post.created_at?
     end
   end
 

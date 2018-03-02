@@ -12,7 +12,7 @@ module SearchableWebsite
       mappings dynamic: 'false' do
         indexes :name, analyzer: 'autocomplete'
         indexes :title
-        indexes :body
+        indexes :body, analyzer: 'autocomplete'
         # indexes :slug
       end
     end
@@ -23,12 +23,12 @@ module SearchableWebsite
           query: {
             multi_match: {
               query: term,
-              fields: ['title^10', 'url', 'body^9']
+              fields: ['title^10', 'url', 'body']
             }
           },
           highlight: {
               tags_schema: 'styled',
-              pre_tags: ['<em>'],
+              pre_tags: ['<em class="broski">'],
               post_tags: ['</em>'],
               fields: {
                 title:  { number_of_fragments: 5, fragment_size: 25, fragmenter: 'simple'},
@@ -50,11 +50,11 @@ module SearchableWebsite
   end
 
   def index_document
-    ElasticsearchIndexJob.perform_later('index', 'Website', self.id) if self.created_at?
+    ElasticsearchIndexWorker.perform_async('index', 'Website', self.id) if self.created_at?
   end
 
   def delete_document
-    ElasticsearchIndexJob.perform_later('delete', 'Website', self.id) if self.created_at?
+    ElasticsearchIndexWorker.perform_async('delete', 'Website', self.id) if self.created_at?
   end
 
   INDEX_OPTIONS = {
@@ -64,14 +64,17 @@ module SearchableWebsite
       filter: {
         "autocomplete_filter" => {
           type: "edge_ngram",
+          stop_words: '_english_',
           min_gram: 1,
           max_gram: 20
         }
       },
+
       analyzer: {
         "autocomplete" => {
           type: "custom",
           tokenizer: "standard",
+
           filter: [
             "lowercase",
             "autocomplete_filter"

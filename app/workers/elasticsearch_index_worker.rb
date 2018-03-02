@@ -1,11 +1,12 @@
-class ElasticsearchIndexJob < ActiveJob::Base
-  queue_as :elasticsearches
+class ElasticsearchIndexWorker
+  include Sidekiq::Worker
+  sidekiq_options queue: 'elasticsearch', retry: false
 
   def perform(operation, searchable_class, searchable_id)
     if operation =~ /index|delete/
       self.send(operation, searchable_class, searchable_id)
     else
-      logger.warn "PostIndexJob cannot process #{operation}"
+      logger.warn "Cannot process #{operation}"
     end
   end
 

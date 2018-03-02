@@ -1,10 +1,11 @@
 require 'rubygems'
-require 'timeout'
+# require 'timeout'
 require 'addressable/uri'
 require 'mechanize'
 require 'to_regexp'
 require 'nokogiri'
 require 'watir'
+require 'selenium-webdriver'
 
 class Crawler
 # class Crawler < ActiveRecord::Base
@@ -25,7 +26,7 @@ class Crawler
     @urls_ignore_list = [
       /posts\/.*?\/comments\/*?\/new/
     ]
-    
+
     # add first url to process queue
     @urls_not_processed << url
   end
@@ -154,20 +155,61 @@ class Crawler
   end
 
   def views_crawl
-    browser = Watir::Browser.new(:chrome, headless: true, open_timeout: 60, read_timeout: 60)
-    browser.goto(@url)
-    current_url = browser.url
+    # browser = Watir::Browser.new(:chrome, headless: true, open_timeout: 60, read_timeout: 60)
+    attempts = 0
+    begin
+      browser = Watir::Browser.new(:chrome, headless: true, open_timeout: 60, read_timeout: 60,
+                                 :prefs => {:password_manager_enable => false, :credentials_enable_service => false},
+                                 :switches => ["disable-infobars", "no-sandbox"])
+      browser.goto(@url)
+      @title = browser.title
+      browser.close
+    rescue Net::ReadTimeout => e
+      # if attempts == 0
+      #   attempts += 1
+      #   retry
+      # else
+      #   raise
+      # end
+      raise
+      browser.close
+    end
+    # current_url = browser.url
+
+    # @body  = browser.body
     # browser.wai
-    page     = Nokogiri::HTML(browser.html)
-    @title   = page.css("title").text
+    # page     = Nokogiri::HTML(browser.html)
+    # @title   = page.css("title").text
     # @body    = page.css("body").text
-    @urls    = page.css("a").map {|element| element["href"]}.compact
-    # outside_urls = @urls.match(\current_url\)?
+    # @urls    = page.css("a").map {|element| element["href"]}.compact
+    # external_urls = @urls.match(\current_url\)?
   end
 
-  def scan_url(url)
+  def crawl_selenium
+    # headless = Headless.new
+    # headless.start
+    # client =
+    # switches = %w[--headless --disable-gpu --no-sandbox]
+    # driver = Selenium::WebDriver.for(:chrome, switches: switches)
+    # driver = Selenium::WebDriver.for(:chrome, client: client, switches: switches)
 
+    options = Selenium::WebDriver::Chrome::Options.new(args: ['headless', 'disable-gpu', 'no-sandbox'])
+    driver = Selenium::WebDriver.for(:chrome, options: options)
+    driver.manage.timeouts.implicit_wait = 10
+    begin
+      # driver.get("http://#{@url}")
+      driver.navigate.to("http://#{@url}")
+      @title = Nokogiri::HTML(driver.page_source).css("title").text
+    # driver.quit
+      driver.quit
+    rescue  Net::OpenTimeout, SocketError, Timeout::Error, Errno::EMFILE, Net::ReadTimeout => e
+      puts "Crawler failed to parse: #{e}"
+      driver.quit
+    end
   end
+  # def scan_url(url)
+
+  # end
 
   def inside
     @inside

@@ -1,6 +1,7 @@
 # require File.dirname(__FILE__) + '/../models/crawler'
 class BatchWorker
   include Sidekiq::Worker
+  sidekiq_options queue: 'crawler'
   def perform(batch_id, csv_file)
     batch = Batch.find(batch_id)
     n = 0

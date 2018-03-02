@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  # # views.ly/vc.ru/top-investments
+  # get '/:website' => "website#index"
   scope '/api' do
   # scope '/v1' do
     post '/import_csv' => "home#import_csv"
@@ -19,7 +21,6 @@ Rails.application.routes.draw do
       get ':username/followers' => 'followers#index'
       get ':username/following' => 'following#index'
       resource :search, only: :show
-      # get '/search' => 'search#show'
     end
 
     # Create Queries list
@@ -27,36 +28,43 @@ Rails.application.routes.draw do
     get    'query/search' => 'queries#create'
     get    'queries'      => 'queries#index'
     delete 'query/'       => 'queries#destroy'
+
     namespace :websites do
       get 'search' => 'search#index'
-      # resource :search, only: :show
     end
-    # get 'query/search' => "search#show"
+
+    #Search Endpoint
     get "queries/search" => "search#queries"
-    get "surf"        => "search_autocomplete#index"
-    get "search"      => "search#show", as: :search
-    # get "search"      => "search#websites", as: :search
+    get "surf"           => "search_autocomplete#index"
+    get "search"         => "search#show", as: :search
     get "weby"        => "search#websites"
     get "search_user" => "search#users"
-
     get "sites/search" => "search#sites"
+    # get "search"      => "search#websites", as: :search
     # get "autocomplete" => "search_autocomplete#index"
-    put 'me/avatar' => 'avatar_images#update'
-    patch 'me' => 'users#update'
 
-    post 'follow/:user_id' => 'relationships#create'
+    #Avatar Upload
+    put   'me/avatar' => 'avatar_images#update'
+    patch 'me'      => 'users#update'
+
+    #Follow Endpoint
+    post   'follow/:user_id'   => 'relationships#create'
     delete 'unfollow/:user_id' => 'relationships#destroy'
 
+    #Tags index
     get 'posts/tags/:tag_name' => 'tags/posts#index'
 
+    #Post Endpoints
     resources :posts, only: [:index, :create] do
       resource :likes, only: [:create, :destroy], module: :posts
       resources :comments, only: [:index, :create, :destroy], module: :posts
       resources :likers, only: [:index], module: :posts
     end
 
+    #Locations
     resources :locations, only: [:show]
 
+    #Following Suggestion
     resources :follow_suggestions, only: [:index]
 
     mount ActionCable.server => '/cable'

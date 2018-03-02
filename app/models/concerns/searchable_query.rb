@@ -15,19 +15,29 @@ module SearchableQuery
       end
     end
 
-    def self.search(term)
+    def self.search(q)
       __elasticsearch__.search(
         {
-          # query: {
-          #   term: {
-          #     name: term
-          #   }
-          # },
           query: {
-            match: {
-              name: term
+            match_phrase: {
+                name: q
             }
-          }
+          },
+          # suggest: {
+            # text: q,
+            # name: { term: { size: 1, field: :name } },
+          #   body: { term: { size: 1, field: :body } }
+          # }
+          # suggest: {
+          #   text: q,
+          #   title: { term: { size: 1, field: :title } },
+          #   body: { term: { size: 1, field: :body } }
+          # }
+          # query: {
+          #   match: {
+          #     name: query
+          #   }
+          # }
         }
       )
     end
@@ -41,14 +51,14 @@ module SearchableQuery
   end
 
   def index_document
-    ElasticsearchIndexJob.perform_later('index', 'Query', self.id)
+    ElasticsearchIndexWorker.perform_async('index', 'Query', self.id)
     # self.posts.find_each do |post|
     #   ElasticsearchIndexJob.perform_later('index', 'Post', post.id) if post.created_at?
     # end
   end
 
   def delete_document
-    ElasticsearchIndexJob.perform_later('delete', 'Query', self.id)
+    ElasticsearchIndexWorker.perform_async('delete', 'Query', self.id)
     # self.posts.find_each do |post|
     #   ElasticsearchIndexJob.perform_later('delete', 'Post', post.id) if post.created_at?
     # end
@@ -69,6 +79,8 @@ module SearchableQuery
         "autocomplete" => {
           type: "custom",
           tokenizer: "standard",
+          min_gram: 1,
+          max_gram: 20,
           filter: [
             "lowercase",
             "autocomplete_filter"

@@ -46,13 +46,14 @@ class HomeController < ApplicationController
       batch = Batch.create(:status => :started)
 
       if batch.save
-         BatchWorker.perform_async(batch.id, infile)
+        BatchWorker.perform_async(batch.id, infile)
         # redirect_to batch_index_path
         # render json: @batchWorker
         # render json: batch
+        render json: batch
       end
       # render json: @batchWorker
-      # render json: batch
+
     end
   end
 end

@@ -19,4 +19,10 @@ namespace :elasticsearch do
     end
 
   end
+  # Delete the previous index in Elasticsearch
+  task :destroy  => :environment do
+    [Site, User, Website, Query].each do |klass|
+      klass.__elasticsearch__.client.indices.delete index: klass.index_name rescue nil
+    end
+  end
 end

@@ -24,20 +24,20 @@ class SearchController < ApplicationController
     # @users = User.search(query_term).paginate(page: params[:page], per_page: 1)
     # @users = User.search(query_term).paginate(page: params[:page], per_page: 1).results
     # @users = User.search(query_term).paginate(page: params[:page], per_page: 1).response
-    @users = User.search(query_term).paginate(page: params[:page], per_page: 2).records
+    @users = User.search(query_term).paginate(page: params[:page], per_page: 2).response
     render json: @users
     # render :users => '/search/users', :formats => :json
   end
 
   def queries
-    @queries = Query.search(query_term).paginate(page: params[:page], per_page: 2).records
+    @queries = Query.search(query_term).paginate(page: params[:page], per_page: 2).results
     # render json: @query
     render :queries => '/search/queries', :formats => :json
   end
 
   def websites
     # @website = Website.search(query_term).response
-    @website = Website.search(query_term).paginate(page: params[:page], per_page: 2).records
+    @website = Website.search(query_term).paginate(page: params[:page], per_page: 2).results
     render json: @website
   end
 

@@ -6,21 +6,21 @@ class QueriesController < ApplicationController
 
   def create
     # @query = Query.new
-    if Query.where(name: params[:q]).present?
-    # if @query = Query.where("name ILIKE ?", "%#{params[:q]}%").present?
+    # if Query.where(name: params[:q]).present?
+    if @query = Query.where('lower(name) LIKE ?', "%#{params[:q].downcase}%").present?
       # @query = Query.where(printed_count: printed_count).first_or_create!
-      @query = Query.find_by(name: params[:q])
+      @query = Query.find_by(name: params[:q].downcase)
       # @query = Query.where("name ILIKE ?", "%#{params[:q]}%")
       # User.likes.where(query_id: query.id).first_or_create!
-      @query.update_attributes(query_params)
+      # @query.update_attributes(query_params)
       render json: @query
     else
-      @query = Query.create(name: params[:q])
+      @query ||= Query.create(name: params[:q].downcase)
       render json: @query
     end
 
   end
-
+  
   def destroy
     @query = Query.find_by_id(params[:id])
     @query.destroy
