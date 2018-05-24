@@ -1,4 +1,6 @@
 ---
-:concurrency: 10
+:concurrency: 25
 :queues:
-  - default
+  - [crawler, 1]
+  - [crawler_one, 1]
+  - [elasticsearch, 1]

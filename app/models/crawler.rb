@@ -8,8 +8,7 @@ require 'watir'
 require 'selenium-webdriver'
 
 class Crawler
-# class Crawler < ActiveRecord::Base
-  # after_commit :views_crawl, on: :create
+
   attr_reader :matched_keywords, :quantity_to_match
   def initialize(url)
     @url = url
@@ -186,30 +185,20 @@ class Crawler
   end
 
   def crawl_selenium
-    # headless = Headless.new
-    # headless.start
-    # client =
-    # switches = %w[--headless --disable-gpu --no-sandbox]
-    # driver = Selenium::WebDriver.for(:chrome, switches: switches)
-    # driver = Selenium::WebDriver.for(:chrome, client: client, switches: switches)
-
     options = Selenium::WebDriver::Chrome::Options.new(args: ['headless', 'disable-gpu', 'no-sandbox'])
-    driver = Selenium::WebDriver.for(:chrome, options: options)
+    driver  = Selenium::WebDriver.for(:chrome, options: options)
     driver.manage.timeouts.implicit_wait = 10
     begin
-      # driver.get("http://#{@url}")
       driver.navigate.to("http://#{@url}")
+      # driver.get("http://#{@url}")
       @title = Nokogiri::HTML(driver.page_source).css("title").text
-    # driver.quit
+      # @body  = Nokogiri::HTML(driver.page_source)
       driver.quit
-    rescue  Net::OpenTimeout, SocketError, Timeout::Error, Errno::EMFILE, Net::ReadTimeout => e
+    rescue  Net::OpenTimeout, SocketError, Timeout::Error, Errno::EMFILE, Errno::ECONNREFUSED, Net::ReadTimeout => e
       puts "Crawler failed to parse: #{e}"
       driver.quit
     end
   end
-  # def scan_url(url)
-
-  # end
 
   def inside
     @inside

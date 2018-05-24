@@ -41,15 +41,12 @@ class HomeController < ApplicationController
     # @neg_keywords = @settings.neg_keywords
 
     if request.post? && params[:inputfile].present?
-      infile = params[:inputfile].read
+      infile = params[:inputfile].path
       n, errors = 0, []
       batch = Batch.create(:status => :started)
 
       if batch.save
         BatchWorker.perform_async(batch.id, infile)
-        # redirect_to batch_index_path
-        # render json: @batchWorker
-        # render json: batch
         render json: batch
       end
       # render json: @batchWorker

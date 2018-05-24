@@ -18,6 +18,7 @@ gem 'selenium-webdriver'
 # gem 'sinatra'
 # gem 'sidekiq', '~> 4.0'
 gem 'sidekiq', '5.1.1'
+gem 'smarter_csv'
 gem 'jbuilder'
 # Elasticsearch
 gem 'elasticsearch-model', '~> 0.1.8'
@@ -27,6 +28,11 @@ gem 'mechanize'
 gem 'nokogiri'
 gem 'addressable'
 gem 'to_regexp'
+
+#Typhoeus parallel requests
+gem 'typhoeus'
+gem 'librato-logreporter'
+gem 'foreman'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

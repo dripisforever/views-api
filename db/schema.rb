@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180213170309) do
+ActiveRecord::Schema.define(version: 20180517080503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,16 @@ ActiveRecord::Schema.define(version: 20180213170309) do
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "mobile_users", force: :cascade do |t|
+    t.integer "phone_number"
+    t.string "username"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phone_number"], name: "index_mobile_users_on_phone_number", unique: true
+    t.index ["username"], name: "index_mobile_users_on_username", unique: true
   end
 
   create_table "notifications", id: :serial, force: :cascade do |t|
@@ -152,6 +162,11 @@ ActiveRecord::Schema.define(version: 20180213170309) do
     t.datetime "updated_at", null: false
     t.string "url"
     t.integer "number"
+    t.datetime "locked_at"
+    t.boolean "fetched", default: false, null: false
+    t.text "links"
+    t.integer "error_code"
+    t.text "error_message"
   end
 
   add_foreign_key "comments", "posts"

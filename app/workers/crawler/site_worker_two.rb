@@ -1,6 +1,6 @@
-class SiteWorker
+class SiteWorkerTwo
   include Sidekiq::Worker
-  sidekiq_options queue: 'crawler', retry: false, backtrace: true
+  sidekiq_options queue: 'crawler_two', retry: false, backtrace: true
 
   def perform(site_id)
     errors = []
