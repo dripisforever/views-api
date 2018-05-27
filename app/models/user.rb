@@ -28,6 +28,9 @@ class User < ApplicationRecord
   # Carrierwave avatar uploader
   mount_uploader :avatar, AvatarUploader
 
+  def self.
+
+  end
   # Elasticsearch
   # include Elasticsearch::Model
   include SearchableUser

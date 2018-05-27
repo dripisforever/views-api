@@ -1,3 +1,4 @@
+require 'typhoeus/adapters/faraday'
 class Website < ApplicationRecord
 	# has_many :urls
 	# has_many :likes, dependent: :destroy

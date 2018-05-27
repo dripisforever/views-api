@@ -7,7 +7,7 @@ class Users::SearchesController < ApplicationController
       render json: @users, status: 200
 
   end
-
+  query_term = "anuar"
   private
     def query_term
       params[:q]

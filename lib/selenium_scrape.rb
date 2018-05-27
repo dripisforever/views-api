@@ -50,9 +50,14 @@ class SeleniumScrape
       # driver.get("http://#{@url}")
       site = Website.find_or_create_by(url: url)
       @title = Nokogiri::HTML(driver.page_source).css("title").text
-      @body  = Nokogiri::HTML(driver.page_source)
+      @body  = Nokogiri::HTML(driver.page_source).text
+
+      # Saving to Website Model
       site.title = @title
-      # site.body = @body
+      # site.body  = @body
+      # site.image = @image
+      # site.outbound_links = @links.outbound_links
+      # site.inbound_links  = @links.inbound_links
       site.save
       driver.quit
 
