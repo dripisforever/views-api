@@ -1,3 +1,4 @@
+require 'typhoeus/adapters/faraday'
 class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
@@ -28,9 +29,7 @@ class User < ApplicationRecord
   # Carrierwave avatar uploader
   mount_uploader :avatar, AvatarUploader
 
-  def self.
 
-  end
   # Elasticsearch
   # include Elasticsearch::Model
   include SearchableUser
@@ -60,7 +59,12 @@ class User < ApplicationRecord
   end
 
   def delete_dislike!(post)
+    dislikes.where(post_id: post.id).destroy_all
+  end
 
+  #requested counts of QUERY
+  def count!(query)
+    counts.where(query_id: query.id).first_or_create!
   end
 
   def follow(other_user)

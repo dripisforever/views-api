@@ -30,6 +30,7 @@ json.websites do |json|
     json.hits do |json|
       json._source @websites do |website|
         json.id website.id
+        json.url website.url
         json.title website.title
         json.body website.body
         json.highlight website.highlight

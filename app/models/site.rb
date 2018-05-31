@@ -1,3 +1,5 @@
+require 'typhoeus/adapters/faraday'
+
 class Site < ApplicationRecord
   belongs_to :batch
   include SearchableSite

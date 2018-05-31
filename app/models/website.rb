@@ -108,7 +108,7 @@ class Website < ApplicationRecord
     # return handle_scrape_error(response) unless response.success?
 
     begin
-      scraped_attributes = parse_and_find_rg_links(response.body)
+      scraped_attributes = parse_and_find_rg_links(response)
     rescue => e
       Librato.increment('scrape.error')
       tap(&:mark_fetched).update_attributes!(error_message: { :exception => e }.to_yaml)

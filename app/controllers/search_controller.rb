@@ -6,7 +6,8 @@ class SearchController < ApplicationController
     # @query        = Query.search(query_term).results
     @users        = User.search(query_term).results
     # @users        = User.search(query_term).paginate(page: params[:page], per_page: 1).records
-    @websites     = Website.search(query_term).results
+    # @websites     = Website.search(query_term).results
+    @websites = Website.search(query_term).paginate(page: params[:page], per_page: 1).results
 
     @site = Site.search(query_term).results
     # render json: @users
@@ -30,7 +31,7 @@ class SearchController < ApplicationController
   end
 
   def queries
-    @queries = Query.search(query_term).paginate(page: params[:page], per_page: 2).results
+    @queries = Query.search(query_term).paginate(page: params[:page], per_page: 10).results
     # render json: @query
     render :queries => '/search/queries', :formats => :json
   end

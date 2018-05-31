@@ -2,6 +2,7 @@ class PageParser
   def initialize(body)
     @body = body
   end
+  attr_reader :body
 
   def parse_and_find_rg_links
     aggregates = {
@@ -31,7 +32,6 @@ class PageParser
   end
 
   private
-  attr_reader :body
 
   def identify_link_clumps
     link_clumps_by_rg_text_format = identify_link_clumps_with(:rg_text_format?)

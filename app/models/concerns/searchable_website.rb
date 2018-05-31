@@ -12,7 +12,8 @@ module SearchableWebsite
       mappings dynamic: 'false' do
         indexes :name, analyzer: 'autocomplete'
         indexes :title
-        indexes :body, analyzer: 'autocomplete'
+        indexes :body
+        indexes :url
         # indexes :slug
       end
     end
@@ -23,7 +24,7 @@ module SearchableWebsite
           query: {
             multi_match: {
               query: term,
-              fields: ['title^10', 'url', 'body']
+              fields: ['title^9', 'url^10', 'body']
             }
           },
           highlight: {
@@ -33,6 +34,7 @@ module SearchableWebsite
               fields: {
                 title:  { number_of_fragments: 5, fragment_size: 25, fragmenter: 'simple'},
                 # body:   { fragmenter: 'simple', phrase_limit: 100, number_of_fragments: 5}
+                url:    { number_of_fragments: 1, fragment_size: 25, fragmenter: 'simple'},
                 body:   { fragmenter: 'simple', fragment_size: 100,  number_of_fragments: 3}
                 # body:   { fragmenter: 'simple', boundary_scanner: 10, max_fragment_length: 10 }
               }
@@ -45,7 +47,7 @@ module SearchableWebsite
 
   def as_indexed_json(options ={})
     self.as_json({
-      only: [:title, :body, :url]
+      only: [:url, :title, :body]
     })
   end
 
