@@ -5,7 +5,7 @@ require 'smarter_csv'
 namespace :import do
   desc 'Seed data to Site Model'
   task :data => :environment do
-    csv_file = File.read(Rails.root.join('lib', 'seeds', 'top-10.csv'))
+    csv_file = File.read(Rails.root.join('lib', 'seeds', 'top-200.csv'))
     csv = CSV.parse(csv_file, :headers => true)
     csv.each do |row|
       website_hash = row.to_hash

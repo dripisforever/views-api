@@ -72,7 +72,7 @@ class Website < ApplicationRecord
     raise
   rescue => e
     Rails.logger.error([e.message] + e.backtrace)
-    NotificationMailer.notify_error(e.message).deliver! if NotificationMailer.configured?
+    # NotificationMailer.notify_error(e.message).deliver! if NotificationMailer.configured?
 
     raise e
 	end
@@ -108,7 +108,8 @@ class Website < ApplicationRecord
     # return handle_scrape_error(response) unless response.success?
 
     begin
-      scraped_attributes = parse_and_find_rg_links(response)
+      # scraped_attributes = parse_and_find_rg_links(response)
+			scraped_attributes = parse_and_find_rg_links(response.body)
     rescue => e
       Librato.increment('scrape.error')
       tap(&:mark_fetched).update_attributes!(error_message: { :exception => e }.to_yaml)
@@ -138,6 +139,11 @@ class Website < ApplicationRecord
 	end
 
 	def new_request
+		# options = Selenium::WebDriver::Chrome::Options.new(args: ['headless', 'disable-gpu', 'no-sandbox'])
+		# driver  = Selenium::WebDriver.for(:chrome, options: options)
+		# driver.manage.timeouts.implicit_wait = 10
+		# driver.navigate.to("http://#{url}")
+
 		Typhoeus::Request.new(url, followlocation: true, timeout: ENV.fetch('HTTP_TIMEOUT', 20).to_i, headers: request_headers)
 	end
 

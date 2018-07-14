@@ -23,6 +23,18 @@ module SearchableQuery
                 name: q
             }
           },
+
+          # query: {
+          #   prefix: {
+          #     name: q
+          #   }
+          # },
+
+          # query: {
+          #   terms: {
+          #     name: q
+          #   }
+          # },
           # suggest: {
             # text: q,
             # name: { term: { size: 1, field: :name } },

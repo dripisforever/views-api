@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180517080503) do
+ActiveRecord::Schema.define(version: 20180604134920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(version: 20180517080503) do
     t.text "links"
     t.integer "error_code"
     t.text "error_message"
+    t.integer "total_links_count"
   end
 
   add_foreign_key "comments", "posts"

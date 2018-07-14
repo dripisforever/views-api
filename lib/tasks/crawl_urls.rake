@@ -24,9 +24,9 @@ task 'crawl:urls' => :environment do
   begin
     # loop do
       start = Time.now
-      # Website.scrape_batch(batch_size)
+      Website.scrape_batch(batch_size)
       # Website.scrape_batch_with_open_uri(batch_size)
-      Website.scrape_batch_with_selenium(batch_size)
+      # Website.scrape_batch_with_selenium(batch_size)
       # Site.scrape_batch(batch_size)
       Rails.logger.info "Done scraping batch of #{batch_size} at #{((Time.now.to_f - start.to_f) / batch_size.to_f).round(2)}seconds/page"
       # sleep 10 if Website.count.zero?

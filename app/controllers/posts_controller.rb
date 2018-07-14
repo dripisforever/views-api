@@ -5,6 +5,11 @@ class PostsController < ApplicationController
     posts = Post.get_page(params[:page])
     render json: posts, meta: pagination_dict(posts), status: 200
   end
+  
+  def show
+    post = Post.find_by(id: params[:id])
+    render json: post
+  end
 
   def create
     post = current_user.posts.build(post_params)
@@ -15,6 +20,7 @@ class PostsController < ApplicationController
       render json: { errors: post_builder.post.errors.full_messages }, status: 422
     end
   end
+
 
   private
 

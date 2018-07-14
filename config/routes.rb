@@ -3,13 +3,14 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   # # views.ly/vc.ru/top-investments
   # get '/:website' => "website#index"
-  scope '/api' do
-  # scope '/v1' do
+  # scope '/api' do
+  scope '/v1' do
     post '/import_csv' => "home#import_csv"
     get  '/sites_list' => "sites#index"
     get  '/batch_list' => "sites#batch_list"
     mount Sidekiq::Web => '/sidekiq'
 
+    #User Endpoints
     namespace :users do
       resources :notifications, only: [:index, :update]
       resource :notification_counts, only: [:show, :destroy]
@@ -55,7 +56,7 @@ Rails.application.routes.draw do
     get 'posts/tags/:tag_name' => 'tags/posts#index'
 
     #Post Endpoints
-    resources :posts, only: [:index, :create] do
+    resources :posts, only: [:index, :show, :create] do
       resource :likes, only: [:create, :destroy], module: :posts
       resources :comments, only: [:index, :create, :destroy], module: :posts
       resources :likers, only: [:index], module: :posts

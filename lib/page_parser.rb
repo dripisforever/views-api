@@ -27,7 +27,7 @@ class PageParser
 
     {
       links: links_to_rg,
-      total_links_to_rg: links_to_rg.count
+      total_links_count: links_to_rg.count
     }.merge(aggregates).merge(identify_link_clumps)
   end
 

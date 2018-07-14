@@ -64,7 +64,6 @@ class SeleniumScrape
     rescue  Net::OpenTimeout, SocketError, Timeout::Error, Errno::EMFILE, Errno::ECONNREFUSED, Net::ReadTimeout, Errno::ECONNRESET, Errno::EINVAL => e
       driver.quit
       puts "Crawler failed to parse: #{e}"
-
     end
   end
 
