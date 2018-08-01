@@ -34,7 +34,7 @@ module SearchableWebsite
               fields: {
                 title:  { number_of_fragments: 5, fragment_size: 25, fragmenter: 'simple'},
                 # body:   { fragmenter: 'simple', phrase_limit: 100, number_of_fragments: 5}
-                url:    { number_of_fragments: 1, fragment_size: 25, fragmenter: 'simple'},
+                url:    { number_of_fragments: 5, fragment_size: 25, fragmenter: 'simple'},
                 body:   { fragmenter: 'simple', fragment_size: 100,  number_of_fragments: 3}
                 # body:   { fragmenter: 'simple', boundary_scanner: 10, max_fragment_length: 10 }
               }

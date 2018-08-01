@@ -7,7 +7,7 @@ class SearchController < ApplicationController
     @users        = User.search(query_term).results
     # @users        = User.search(query_term).paginate(page: params[:page], per_page: 1).records
     # @websites     = Website.search(query_term).results
-    @websites = Website.search(query_term).paginate(page: params[:page], per_page: 1).results
+    @websites = Website.search(query_term).paginate(page: params[:page], per_page: 5).results
 
     @site = Site.search(query_term).results
     # render json: @users
