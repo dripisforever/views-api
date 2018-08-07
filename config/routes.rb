@@ -62,6 +62,13 @@ Rails.application.routes.draw do
       resources :likers, only: [:index], module: :posts
     end
 
+    resources :websites, only: [:index, :show, :create] do
+      resource :likes, only: [:create, :destroy], module: :websites
+      resource :dislikes, only: [:create, :destroy], module: :websites
+      resources :likers, only: [:index], module: :websites
+      resources :dislikers, only: [:index], module: :websites
+      resources :comments, only: [:index, :create, :destroy], module: :websites
+    end
     #Locations
     resources :locations, only: [:show]
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604134920) do
+ActiveRecord::Schema.define(version: 20180803195530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,9 +39,11 @@ ActiveRecord::Schema.define(version: 20180604134920) do
     t.integer "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "website_id"
     t.index ["post_id"], name: "index_dislikes_on_post_id"
     t.index ["user_id", "post_id"], name: "index_dislikes_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_dislikes_on_user_id"
+    t.index ["website_id"], name: "index_dislikes_on_website_id"
   end
 
   create_table "likes", id: :serial, force: :cascade do |t|
@@ -49,9 +51,11 @@ ActiveRecord::Schema.define(version: 20180604134920) do
     t.integer "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "website_id"
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+    t.index ["website_id"], name: "index_likes_on_website_id"
   end
 
   create_table "mobile_users", force: :cascade do |t|
@@ -168,16 +172,23 @@ ActiveRecord::Schema.define(version: 20180604134920) do
     t.integer "error_code"
     t.text "error_message"
     t.integer "total_links_count"
+    t.integer "likes_count", default: 0
+    t.bigint "user_id"
+    t.integer "dislikes_count", default: 0
+    t.index ["user_id"], name: "index_websites_on_user_id"
   end
 
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "dislikes", "posts"
   add_foreign_key "dislikes", "users"
+  add_foreign_key "dislikes", "websites"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "likes", "websites"
   add_foreign_key "posts", "users"
   add_foreign_key "sites", "batches"
   add_foreign_key "taggings", "posts"
   add_foreign_key "taggings", "tags"
+  add_foreign_key "websites", "users"
 end

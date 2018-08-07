@@ -1,8 +1,13 @@
 require 'typhoeus/adapters/faraday'
 class Website < ApplicationRecord
 	# has_many :urls
-	# has_many :likes, dependent: :destroy
-	# has_many :likers, through: :likes, source: :user
+	belongs_to :user
+	
+	has_many :likes, dependent: :destroy
+  has_many :likers, through: :likes, source: :user
+
+  has_many :dislikes, dependent: :destroy
+  has_many :dislikers, through: :dislikes, source: :user
   # has_many :comments, dependent: :destroy
 	# has_many :taggings, dependent: :destroy
   # has_many :tags, through: :taggings
