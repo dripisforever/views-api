@@ -3,6 +3,7 @@ class Website < ApplicationRecord
 	# has_many :urls
 	belongs_to :user
 	
+	has_many :views
 	has_many :likes, dependent: :destroy
   has_many :likers, through: :likes, source: :user
 

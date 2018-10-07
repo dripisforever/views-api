@@ -7,7 +7,7 @@ class Post::Create
 
   def run
     if post.save
-      create_tags
+      # create_tags
       post
     else
       false

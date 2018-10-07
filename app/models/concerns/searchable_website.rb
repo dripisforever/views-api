@@ -14,6 +14,8 @@ module SearchableWebsite
         indexes :title
         indexes :body
         indexes :url
+        indexes :liked
+        indexes :disliked
         # indexes :slug
       end
     end
@@ -47,7 +49,7 @@ module SearchableWebsite
 
   def as_indexed_json(options ={})
     self.as_json({
-      only: [:url, :title, :body]
+      only: [:url, :title, :body, :liked, :disliked]
     })
   end
 

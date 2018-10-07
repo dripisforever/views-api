@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180803195530) do
+ActiveRecord::Schema.define(version: 20180809065202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -157,6 +157,16 @@ ActiveRecord::Schema.define(version: 20180803195530) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "views", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "website_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "website_id"], name: "index_views_on_user_id_and_website_id", unique: true
+    t.index ["user_id"], name: "index_views_on_user_id"
+    t.index ["website_id"], name: "index_views_on_website_id"
+  end
+
   create_table "websites", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "header"
@@ -175,6 +185,8 @@ ActiveRecord::Schema.define(version: 20180803195530) do
     t.integer "likes_count", default: 0
     t.bigint "user_id"
     t.integer "dislikes_count", default: 0
+    t.boolean "liked", default: false, null: false
+    t.boolean "disliked", default: false, null: false
     t.index ["user_id"], name: "index_websites_on_user_id"
   end
 
@@ -190,5 +202,7 @@ ActiveRecord::Schema.define(version: 20180803195530) do
   add_foreign_key "sites", "batches"
   add_foreign_key "taggings", "posts"
   add_foreign_key "taggings", "tags"
+  add_foreign_key "views", "users"
+  add_foreign_key "views", "websites"
   add_foreign_key "websites", "users"
 end

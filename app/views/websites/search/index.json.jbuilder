@@ -3,6 +3,8 @@ json.websites do |json|
     json.id website.id
     json.title website.title
     json.body website.body
+    json.liked website.liked
+    json.disliked website.disliked
     # json.name website.name
     # json.title.fragment website.title.fragment
     # json.url website_path(website.slug)

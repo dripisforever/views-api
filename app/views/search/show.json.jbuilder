@@ -34,6 +34,8 @@ json.websites do |json|
         json.title website.title
         json.body website.body
         json.highlight website.highlight
+        json.liked website.liked
+        json.disliked website.disliked
         # json.url website_path(website.slug)
       end
       # json.highlight @websites do |website|

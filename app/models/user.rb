@@ -2,7 +2,12 @@ require 'typhoeus/adapters/faraday'
 class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :dislikes, dependent: :destroy
+
   has_many :liked_posts, through: :likes, source: :post
+  has_many :liked_websites, through: :likes, source: :website
+  has_many :disliked_websites, through: :dislikes, source: :website
+
   has_many :comments, dependent: :destroy
   has_many :active_relationships, class_name: "Relationship",
             foreign_key: "follower_id",
